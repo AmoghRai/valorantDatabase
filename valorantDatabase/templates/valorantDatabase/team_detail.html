@@ -1,0 +1,37 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}{{ team.teamname }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1 class="mb-4">{{ team.teamname }}</h1>
+
+  <h3>Players</h3>
+  <ul class="list-group mb-4">
+    {% for player in players %}
+      <li class="list-group-item">
+        <a href="{% url 'player_detail' player.playername %}" class="link-dark">
+          {{ player.playername }}
+        </a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No players found.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Recent Matches</h3>
+  <ul class="list-group mb-4">
+    {% for match in matches %}
+      <li class="list-group-item">
+        <a href="{% url 'match_detail' match.matchid %}" class="link-dark">
+          {{ match.team1 }} vs {{ match.team2 }} — {{ match.date }}
+        </a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No matches found.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'index' %}" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endblock %}

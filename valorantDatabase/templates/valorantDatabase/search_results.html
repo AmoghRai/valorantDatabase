@@ -1,0 +1,37 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h2 class="mb-4">Search Results for "<span class="text-primary">{{ query }}</span>"</h2>
+
+  {% if teams %}
+    <h4>Teams</h4>
+    <ul class="list-group mb-3">
+      {% for team in teams %}
+        <li class="list-group-item">
+          <a href="{% url 'team_detail' team.teamname %}" class="link-dark">{{ team.teamname }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if players %}
+    <h4>Players</h4>
+    <ul class="list-group mb-3">
+      {% for player in players %}
+        <li class="list-group-item">
+          <a href="{% url 'player_detail' player.playername %}" class="link-dark">{{ player.playername }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if not teams and not players %}
+    <p class="text-muted">No results found.</p>
+  {% endif %}
+
+  <a href="{% url 'index' %}" class="btn btn-secondary">Back to home</a>
+</div>
+{% endblock %}

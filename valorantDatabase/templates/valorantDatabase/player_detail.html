@@ -1,0 +1,40 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}{{ player.playername }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1 class="mb-3">{{ player.playername }}</h1>
+
+  <p><strong>Team:</strong>
+    <a href="{% url 'team_detail' player.teamname.teamname %}" class="link-primary">
+      {{ player.teamname }}
+    </a>
+  </p>
+
+  <p><strong>Average Rating:</strong>
+    {% if avg_rating %}
+      <span class="badge bg-success">{{ avg_rating|floatformat:2 }}</span>
+    {% else %}
+      <span class="text-muted">N/A</span>
+    {% endif %}
+  </p>
+
+  <h3 class="mt-4">Recent Matches</h3>
+  <ul class="list-group">
+    {% for match in matches %}
+      <li class="list-group-item">
+        <a href="{% url 'match_detail' match.matchid %}" class="link-dark">
+          {{ match.team1 }} vs {{ match.team2 }} on {{ match.date }}
+        </a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No matches found.</li>
+    {% endfor %}
+  </ul>
+
+  <div class="mt-4">
+    <a href="{% url 'index' %}" class="btn btn-secondary">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

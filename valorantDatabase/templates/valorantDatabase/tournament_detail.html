@@ -1,0 +1,62 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1 class="mb-4">{{ tournament.name }}</h1>
+
+  <h3>Participating Teams</h3>
+  <ul class="list-group mb-4">
+    {% for team in teams %}
+      <li class="list-group-item">
+        <a href="{% url 'team_detail' team.teamname %}" class="link-dark">
+          {{ team.teamname }}
+        </a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No teams found for this tournament.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Top Player</h3>
+  {% if top_player %}
+    <p class="fs-5">
+      <a href="{% url 'player_detail' top_player.playername %}" class="link-primary">
+        {{ top_player.playername }}
+      </a> – Average Rating: <strong>{{ top_rating }}</strong>
+    </p>
+  {% else %}
+    <p class="text-muted">No player ratings available for this tournament.</p>
+  {% endif %}
+	<h2 class="mt-4">Player Leaderboard</h2>
+<table class="table table-striped table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Rank</th>
+      <th scope="col">Player</th>
+      <th scope="col">Average Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for player in leaderboard %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>
+          <a href="{% url 'player_detail' player.player__playername %}">
+            {{ player.player__playername }}
+          </a>
+        </td>
+        <td>{{ player.avg_rating|floatformat:2 }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="3">No player ratings available for this tournament.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  <a href="{% url 'index' %}" class="btn btn-secondary mt-3">Back to home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}VCT Matches{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">Recent Matches</h1>
+
+  <form method="get" action="{% url 'search' %}" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="q" class="form-control" placeholder="Search teams or players..." required>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <ul class="list-group">
+    {% for match in matches %}
+      <li class="list-group-item bg-secondary text-light">
+        <a href="{% url 'match_detail' match.matchid %}" class="text-light text-decoration-none">
+          {{ match.date }} — {{ match.team1 }} vs {{ match.team2 }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "valorantDatabase/base.html" %}
+
+{% block title %}Match on {{ match.date }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1 class="mb-3">Match on {{ match.date }}</h1>
+  <h2 class="mb-3">{{ match.team1 }} vs {{ match.team2 }}</h2>
+
+  {% if match.tournamentname %}
+    <p>
+      <strong>Tournament:</strong>
+      <a href="{% url 'tournament_detail' match.tournamentname.name %}" class="link-primary">
+        {{ match.tournamentname.name }}
+      </a>
+    </p>
+  {% endif %}
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h4>Team 1: 
+        <a href="{% url 'team_detail' match.team1.teamname %}" class="link-info">{{ match.team1 }}</a>
+      </h4>
+      <ul class="list-group">
+        {% for player, rating in team1_ratings %}
+          <li class="list-group-item">
+            {% if rating.player and rating.player.playername %}
+              <a href="{% url 'player_detail' rating.player.playername %}" class="link-dark fw-semibold">
+                {{ rating.player.playername }}
+              </a>
+            {% else %}
+              <span class="text-muted">Unknown Player</span>
+            {% endif %}
+            <span class="float-end badge bg-primary">Rating: {{ rating.rating|floatformat:2|default:"N/A" }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Team 2: 
+        <a href="{% url 'team_detail' match.team2.teamname %}" class="link-info">{{ match.team2 }}</a>
+      </h4>
+      <ul class="list-group">
+        {% for player, rating in team2_ratings %}
+          <li class="list-group-item">
+            {% if rating.player and rating.player.playername %}
+              <a href="{% url 'player_detail' rating.player.playername %}" class="link-dark fw-semibold">
+                {{ rating.player.playername }}
+              </a>
+            {% else %}
+              <span class="text-muted">Unknown Player</span>
+            {% endif %}
+            <span class="float-end badge bg-primary">Rating: {{ rating.rating|floatformat:2|default:"N/A" }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a href="{% url 'index' %}" class="btn btn-secondary">Back to home</a>
+  </div>
+</div>
+{% endblock %}
